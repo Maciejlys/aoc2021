@@ -1,8 +1,8 @@
-import { readAs } from "../../utils/fileUtil";
+import { readAs } from "../../../utils/fileUtil";
 
 const input = readAs<number[]>({
   parser: (input) => input.map((number) => parseInt(number)),
-  path: "1/input",
+  path: "src/1/part-1/input",
 });
 
 let sumOfIncrements = 0;
