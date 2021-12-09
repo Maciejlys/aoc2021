@@ -1,4 +1,4 @@
-import { readAs } from "../../../utils/fileUtil";
+import { readAs } from "../utils/fileUtil";
 
 const input = readAs<number[]>({
   parser: (input) => input.map((number) => parseInt(number)),
