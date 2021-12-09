@@ -1,8 +1,8 @@
-import { readAs } from "../../utils/fileUtil";
+import { readAs } from "../../../utils/fileUtil";
 
 const input = readAs<string[]>({
   parser: (input) => input,
-  path: "1/part-2/input-example",
+  path: "src/1/part-2/input-example",
   splitter: /\r\n/,
 });
 

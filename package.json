@@ -11,7 +11,8 @@
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/1/part-1/index.ts"
+    "lvl1-1": "ts-node src/1/part-1/index.ts",
+    "lvl1-2": "ts-node src/1/part-2/index.ts"
   },
   "author": "",
   "license": "ISC"
