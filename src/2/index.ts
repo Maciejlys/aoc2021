@@ -39,6 +39,4 @@ for (let index = 0; index < input.length; index++) {
 
 const result = currentPos.horizontal * currentPos.depth;
 
-console.log(currentPos);
-
 console.log(result);
