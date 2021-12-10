@@ -9,15 +9,17 @@ const input = readAs<string[]>({
 interface Position {
   horizontal: number;
   depth: number;
+  aim: number;
 }
 
-const currentPos: Position = { horizontal: 0, depth: 0 };
+const currentPos: Position = { horizontal: 0, depth: 0, aim: 0 };
 
 const moveForward = (amount: number): void => {
   currentPos.horizontal += amount;
+  currentPos.depth += currentPos.aim * amount;
 };
 const moveUpOrDown = (amount: number): void => {
-  currentPos.depth += amount;
+  currentPos.aim += amount;
 };
 
 for (let index = 0; index < input.length; index++) {
@@ -36,5 +38,7 @@ for (let index = 0; index < input.length; index++) {
 }
 
 const result = currentPos.horizontal * currentPos.depth;
+
+console.log(currentPos);
 
 console.log(result);
