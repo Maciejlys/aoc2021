@@ -16,6 +16,7 @@
     "lvl2": "ts-node src/2/index.ts",
     "lvl3": "ts-node src/3/index.ts",
     "lvl4": "ts-node src/4/index.ts",
+    "lvl4-2": "ts-node src/4/part2.ts",
     "lvl5": "ts-node src/5/index.ts",
     "lvl6": "ts-node src/6/index.ts",
     "lvl7": "ts-node src/7/index.ts",

@@ -1,8 +1,9 @@
 import { readAs } from "../utils/fileUtil";
+import { transposeMatrix, arrayInArrayFilled } from "../utils/arrayUtils";
 
 const input = readAs<string[]>({
   parser: (input) => input,
-  path: "src/4/input",
+  path: "src/4/input-example",
   splitter: /\r\n/,
 });
 
@@ -10,9 +11,10 @@ interface Board {
   id: number;
   values: number[][];
   matches: boolean[][];
+  winner: boolean;
 }
 
-const allBoards: Board[] = [];
+let allBoards: Board[] = [];
 
 const chosen = input[0].split(",").map((x) => parseInt(x));
 const boards = input
@@ -35,23 +37,24 @@ for (let index = 0; index < boards.length; index += 5) {
       boards[index + 3],
       boards[index + 4],
     ],
-    matches: Array.from(Array(5), () => new Array(5).fill(false)),
+    matches: arrayInArrayFilled(5, false),
+    winner: false,
   });
 }
 
-const transpose = (m: boolean[][]) => m[0].map((x, i) => m.map((x) => x[i]));
-
 const checkForWin = (arr: boolean[][]): boolean => {
-  const tranposedArr = transpose(arr);
+  const tranposedArr = transposeMatrix(arr);
   for (let index = 0; index < arr.length; index++) {
     const row = arr[index];
     const transRow = tranposedArr[index];
-    if (row.every((x) => x == true || transRow.every((x) => x == true))) {
+    if (row.every((x) => x === true || transRow.every((x) => x === true))) {
       return true;
     }
   }
   return false;
 };
+
+// Part 1
 
 const markAllChosen = (): number[] => {
   let winner = -1;
@@ -78,27 +81,12 @@ const markAllChosen = (): number[] => {
         return [singleBoard.id, chosenNumber];
       }
     }
-    // Previous solution, was shorter but unfortunately I can't get out of
-    // forEach wich makes all marked values true, I tried saving current state
-    // but decided to rewrite this solution using loops
-
-    // allBoards.forEach((board, boardIndex) => {
-    //   board.values.forEach((row, rowIndex) => {
-    //     if (row.includes(element)) {
-    //       let indexOfElement = row.indexOf(element);
-    //       board.matches[rowIndex][indexOfElement] = true;
-    //     }
-    //   });
-    //   if (checkForWin(board.matches) && winner == -1) {
-    //     winner = boardIndex;
-    //   }
-    // });
   }
 
   return [winner];
 };
 
-const getUnmarked = (board: Board): number => {
+const getUnmarkedSum = (board: Board): number => {
   const result: number[] = [];
 
   for (let index = 0; index < board.values.length; index++) {
@@ -111,9 +99,9 @@ const getUnmarked = (board: Board): number => {
   return result.reduce((a, b) => a + b, 0);
 };
 
-const id = markAllChosen();
-const index = id[0] / 5;
+const [id, number] = markAllChosen();
+const index = id / 5;
 
-const sumOfUnmarked = getUnmarked(allBoards[index]);
+const sumOfUnmarked = getUnmarkedSum(allBoards[index]);
 
-console.log(sumOfUnmarked * id[1]);
+console.log(sumOfUnmarked * number);
