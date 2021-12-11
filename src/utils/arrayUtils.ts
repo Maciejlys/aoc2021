@@ -7,3 +7,11 @@ export const arrayInArrayFilled = (
 ): Array<Array<any>> => {
   return Array.from(Array(size), () => new Array(size).fill(fill));
 };
+
+export const arrayInArrayFilledXY = (
+  fill: any,
+  sizeX: number,
+  sizeY: number = sizeX
+): Array<Array<any>> => {
+  return Array.from(Array(sizeX), () => new Array(sizeY).fill(fill));
+};
