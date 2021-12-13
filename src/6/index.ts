@@ -1,33 +1,40 @@
 import { readAs } from "../utils/fileUtil";
 
+// #region Interfaces
+interface CachedFishes {
+  [key: number]: number;
+}
+
+interface Fish {
+  spawnTimer: number;
+}
+// #endregion
+
+// #region Input modifications
 const input = readAs<string[]>({
   parser: (input) => input.map((string) => string.split(","))[0],
   path: "src/6/input",
   splitter: /\r\n/,
 });
 
-interface CachedFishes {
-  [key: number]: number;
-}
+const initialPopulation: Fish[] = [];
+input.map((value) => initialPopulation.push({ spawnTimer: parseInt(value) }));
+// #endregion
 
 class Pond {
-  //part1
-  private _currentPopulation: Lanternfish[];
-
-  //part2
   private _cachedPopulation: CachedFishes;
+  private _initialPopulation: Fish[];
 
-  constructor(initialPopulation: Lanternfish[]) {
-    this._currentPopulation = initialPopulation;
-
+  constructor(initialPopulation: Fish[]) {
+    this._initialPopulation = initialPopulation;
     this._cachedPopulation = [];
     this.setInitial();
   }
 
   private setInitial() {
     this._cachedPopulation = this.getEmptyCache();
-    for (const fish of initialPopulation) {
-      this._cachedPopulation[fish.spawnTime] += 1;
+    for (const fish of this._initialPopulation) {
+      this._cachedPopulation[fish.spawnTimer] += 1;
     }
   }
 
@@ -55,16 +62,6 @@ class Pond {
     }
   }
 
-  getCurrentPopulation() {
-    return this._currentPopulation;
-  }
-
-  skipToDay(dayNumber: number) {
-    for (let index = 0; index < dayNumber; index++) {
-      this.goToDayAnother();
-    }
-  }
-
   private getEmptyCache = () => {
     const cache: CachedFishes = [];
     for (let index = 0; index < 9; index++) {
@@ -72,51 +69,12 @@ class Pond {
     }
     return cache;
   };
-
-  goToDayAnother() {
-    let previousDay = this._currentPopulation;
-    let currentPopulation: Lanternfish[] = [];
-
-    previousDay.forEach((fish) => {
-      if (fish.spawnTime === 0) {
-        fish.restart();
-        currentPopulation.push(new Lanternfish(8));
-        currentPopulation.push(fish);
-      } else {
-        fish.decrement();
-        currentPopulation.push(fish);
-      }
-    });
-
-    this._currentPopulation = currentPopulation;
-  }
 }
-
-class Lanternfish {
-  spawnTime: number;
-
-  constructor(spawnTime: number) {
-    this.spawnTime = spawnTime;
-  }
-
-  decrement() {
-    this.spawnTime -= 1;
-  }
-
-  restart() {
-    this.spawnTime = 6;
-  }
-}
-
-const initialPopulation = input.map(
-  (value) => new Lanternfish(parseInt(value))
-);
 
 const part1 = () => {
   const pond = new Pond(initialPopulation);
-  pond.skipToDay(80);
-  const result = pond.getCurrentPopulation().length;
-
+  pond.getToDayWithCached(80);
+  const result = pond.getNumberOfFishes();
   console.log(result);
 };
 
@@ -127,5 +85,5 @@ const part2 = () => {
   console.log(result);
 };
 
-// part1();
+part1();
 part2();
