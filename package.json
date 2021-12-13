@@ -5,6 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@types/fs-extra": "^9.0.13",
+    "lodash": "^4.17.21",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.2"
   },
