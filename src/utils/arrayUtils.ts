@@ -8,10 +8,10 @@ export const arrayInArrayFilled = (
   return Array.from(Array(size), () => new Array(size).fill(fill));
 };
 
-export const arrayInArrayFilledXY = (
+export const fillArayInArray = (
   fill: any,
-  sizeX: number,
-  sizeY: number = sizeX
+  row: number,
+  col: number
 ): Array<Array<any>> => {
-  return Array.from(Array(sizeX), () => new Array(sizeY).fill(fill));
+  return Array.from(Array(row), () => new Array(col).fill(fill));
 };
