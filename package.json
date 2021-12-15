@@ -21,7 +21,14 @@
     "lvl6": "ts-node src/6/index.ts",
     "lvl7": "ts-node src/7/index.ts",
     "lvl8": "ts-node src/8/index.ts",
-    "lvl9": "ts-node src/9/index.ts"
+    "lvl9": "ts-node src/9/index.ts",
+    "lvl10": "ts-node src/10/index.ts",
+    "lvl11": "ts-node src/11/index.ts",
+    "lvl12": "ts-node src/12/index.ts",
+    "lvl13": "ts-node src/13/index.ts",
+    "lvl14": "ts-node src/14/index.ts",
+    "lvl15": "ts-node src/15/index.ts",
+    "lvl16": "ts-node src/16/index.ts"
   },
   "author": "",
   "license": "ISC"
