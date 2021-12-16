@@ -29,26 +29,58 @@ const scores: Record<string, number> = {
   ">": 25137,
 };
 
-const part1 = () => {
+const incompleteScores: Record<string, number> = {
+  ")": 1,
+  "]": 2,
+  "}": 3,
+  ">": 4,
+};
+
+const parse = (input: string[]): [number, string[][]] => {
   let sum = 0;
+  const incompletes = [];
   for (const line of input) {
-    const aloneOpener: string[] = [];
+    let isCorrupted = false;
+    const aloneOpeners: string[] = [];
     for (const char of line) {
       if (pairs[char]) {
-        aloneOpener.push(char);
+        aloneOpeners.push(char);
         continue;
       }
 
-      const lastOpener = aloneOpener.pop()!;
-      if (pairs[lastOpener] == char) continue;
-
-      sum += scores[char];
+      const lastOpener = aloneOpeners.pop()!;
+      if (pairs[lastOpener] !== char) {
+        sum += scores[char];
+        isCorrupted = true;
+      }
     }
+    if (aloneOpeners.length > 0 && !isCorrupted) incompletes.push(aloneOpeners);
   }
+  return [sum, incompletes];
+};
+
+const part1 = () => {
+  const [sum] = parse(input);
   console.log(sum);
 };
 
-const part2 = () => {};
+const part2 = () => {
+  const [sum, incompletes] = parse(input);
+
+  const sums = [];
+  for (const incomplete of incompletes) {
+    let score = 0;
+    for (let i = incomplete.length - 1; i >= 0; i--) {
+      const opener = incomplete[i];
+      const closer = pairs[opener];
+      score *= 5;
+      score += incompleteScores[closer];
+    }
+    sums.push(score);
+  }
+
+  console.log(sums.sort((a, b) => a - b)[(sums.length - 1) / 2]);
+};
 
 part1();
 part2();
