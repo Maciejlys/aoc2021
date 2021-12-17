@@ -9,17 +9,10 @@ var _ = require("lodash");
 const input = readAs<number[][]>({
   parser: (input) =>
     input.map((row) => row.split("").map((value) => parseInt(value))),
-  path: "src/11/input-example",
+  path: "src/11/input",
   splitter: /\r\n/,
 });
 // #endregion
-
-const whenAreSynced = (octopuses: Octopus[][], day: number) => {
-  const result = [];
-  if (octopuses.every((row) => row.every((value) => value.didFlash))) {
-    result.push(day);
-  }
-};
 
 class Octopus {
   row: number;
@@ -89,6 +82,13 @@ const getNeigbours = (octopuses: Octopus[][], curr: Octopus) => {
   return neighbors;
 };
 
+const checkIfSynced = (octopuses: Octopus[][]) => {
+  if (octopuses.every((row) => row.every((value) => value.didFlash))) {
+    return true;
+  }
+  return false;
+};
+
 const raiseEnergy = (octopuses: Octopus[][]) => {
   octopuses.forEach((row) => row.forEach((octopus) => octopus.raiseEnergy()));
   return octopuses;
@@ -130,19 +130,48 @@ const goToDay = (octopuses: Octopus[][], days: number): Octopus[][] => {
       }
     }
     checkAll(octopuses);
-
+    if (checkIfSynced(octopuses)) {
+    }
     octopuses.map((row) => row.map((octo) => octo.reset()));
   }
   return octopuses;
 };
 
-const part1 = () => {
-  const octopuses = parse(input);
-  const octopusesAfterDay = goToDay(octopuses, 100);
-  console.log(getAllFlashes(octopusesAfterDay));
+const whenAllSynced = (octopuses: Octopus[][]): number => {
+  for (let day = 0; day < 1000; day++) {
+    octopuses = raiseEnergy(octopuses);
+    checkAll(octopuses);
+    const que: Octopus[] = getAllThatFlashed(octopuses);
+
+    while (que.length > 0) {
+      const curr = que.pop()!;
+      for (const neigh of getNeigbours(octopuses, curr)) {
+        if (neigh.didFlash) continue;
+        neigh.raiseEnergy();
+        neigh.check();
+        if (neigh.didFlash) que.push(neigh);
+      }
+    }
+    checkAll(octopuses);
+    if (checkIfSynced(octopuses)) {
+      return day + 1;
+    }
+    octopuses.map((row) => row.map((octo) => octo.reset()));
+  }
+  return 0;
 };
 
-const part2 = () => {};
+const part1 = () => {
+  const octo = parse(input);
+  const octopuses = goToDay(octo, 100);
+  console.log(getAllFlashes(octopuses));
+};
+
+const part2 = () => {
+  const octo = parse(input);
+  const sync = whenAllSynced(octo);
+  console.log(sync);
+};
 
 part1();
 part2();
